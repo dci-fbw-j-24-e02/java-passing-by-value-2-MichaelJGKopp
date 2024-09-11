@@ -1,33 +1,35 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class Main{
+public class Main {
     public static void main(String[] args) {
-        // prompts the user to enter an integer value
-        Scanner input = new Scanner(System.in);
-        System.out.println("Enter an integer value: ");
-
-        // Store this value in an integer variable
-        int int1 = input.nextInt();
-
-
-        // After calling the increment method,
+        int int1 = getUserInput();
         increment(int1);
-
-        // display the original value to show that it has not been changed.
         System.out.println("Original integer value is " + int1 + " and has not been changed.");
-
     }
 
-    // Implement a method named increment that takes an integer parameter.
-    // This method should not return any values.
-    public static void increment(int int1){
-        // Inside this method, increment the value of the parameter by 1.
-        // Note that this method should only modify the copy of the parameter
-        // and not the original variable passed by the user.
-        int1++;
+    public static int getUserInput() {
+        try (Scanner input = new Scanner(System.in)) {
+            int int1 = 0;
+            boolean validInput = false;
 
-        // Also, display the incremented value as it was modified within the method.
+            while (!validInput) {
+                System.out.println("Enter an integer value: ");
+                try {
+                    int1 = input.nextInt();
+                    validInput = true;
+                } catch (InputMismatchException e) {
+                    // Handle invalid input
+                    System.out.println("Invalid input. Please enter an integer value.");
+                    input.next(); // Clear the invalid input
+                }
+            }
+            return int1;
+        }
+    }
+
+    public static void increment(int int1) {
+        int1++;
         System.out.println("Incremented value as it was modified within the method: " + int1);
     }
-
 }
