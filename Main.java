@@ -9,22 +9,28 @@ public class Main {
     }
 
     public static int getUserInput() {
-        try (Scanner input = new Scanner(System.in)) {
-            int int1 = 0;
-            boolean validInput = false;
+        try {
+            try (Scanner input = new Scanner(System.in)) {
+                int int1 = 0;
+                boolean validInput = false;
 
-            while (!validInput) {
-                System.out.println("Enter an integer value: ");
-                try {
-                    int1 = input.nextInt();
-                    validInput = true;
-                } catch (InputMismatchException e) {
-                    // Handle invalid input
-                    System.out.println("Invalid input. Please enter an integer value.");
-                    input.next(); // Clear the invalid input
+                while (!validInput) {
+                    System.out.println("Enter an integer value: ");
+                    try {
+                        int1 = input.nextInt();
+                        input.nextLine(); // Consume the newline character
+                        validInput = true;
+                    } catch (InputMismatchException e) {
+                        // Handle invalid input
+                        System.out.println("Invalid input. Please enter an integer value.");
+                        input.nextLine(); // Clear the invalid input
+                    }
                 }
+                return int1;
             }
-            return int1;
+        } catch (IllegalArgumentException | NullPointerException e) {
+            System.out.println("Scanner instantiation failed: " + e.getMessage());
+            return -1;
         }
     }
 
